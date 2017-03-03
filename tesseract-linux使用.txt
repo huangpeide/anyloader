@@ -1,0 +1,34 @@
+===安装环境
+centos 7.2 64bit jdk1.8
+===安装步骤
+yum install -y automake autoconf libtool gcc gcc-c++ 
+yum install ImageMagick
+
+yum -y install libpng libpng-devel 
+
+wget http://www.leptonica.com/source/leptonica-1.71.tar.gz
+tar -xvf leptonica-1.71.tar.gz
+cd leptonica-1.71
+./configure --with-libpng && make
+make&&make install
+
+==下载https://github.com/tesseract-ocr 安装包
+tar -zxvf tesseract-3.04.00.tar.gz
+cd tesseract-3.04.00
+./autogen.sh
+mkdir m4
+./configure
+make&&make install
+
+==安装中文和英文的识别库 
+GitHub地址 https://github.com/tesseract-ocr/langdata
+mv tesseract-ocr/tessdata/* /usr/local/share/tessdata/
+
+==copy so文件到 lib目录
+cp -r /usr/local/lib/* /usr/lib --32bit
+cp -r /usr/local/lib/* /usr/lib64 --64bit
+
+==参考文档
+http://blog.csdn.net/diandianxiyu_geek/article/details/50522582
+http://wenku.baidu.com/link?url=TZ3h_JJEhhKLZrkuPkeZXdMC9gor9Bwe7W3-rl-Zmm-3gy_04obGHB6ZHkrZtTVdj8mncUJjd2OHhMK7BrN9wMExWu4iC7_QHmIkvH0Dg6u
+http://blog.csdn.net/torrytang/article/details/43136225

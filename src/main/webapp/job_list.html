@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <title>任务管理</title>
+
+    <link href="css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
+    <link href="font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
+
+    <!-- Data Tables -->
+    <link href="js/plugins/bootstrap-table/bootstrap-table.min.css" rel="stylesheet" type="text/css">
+
+    <link href="css/style.css?v=2.2.0" rel="stylesheet">
+    
+   <!--  <style type="text/css">
+		table{
+		    table-layout:fixed;
+		}
+		td{  
+		    overflow:hidden;
+		    text-overflow:ellipsis;
+		    white-space:nowrap;
+		}
+   </style> -->
+
+</head>
+
+<body>
+    <div id="wrapper">
+        
+        <div id= "left"></div>
+
+        <div id="page-wrapper" class="gray-bg dashbard-1">
+        
+           <div id ="rightup"></div>
+            
+            <div class="row wrapper border-bottom white-bg page-heading">
+                <div class="col-lg-10">
+                    <h2>任务管理</h2>
+                    <ol class="breadcrumb">
+                        <li>
+                            <a href="index.html">主页</a>
+                        </li>
+                        <li>
+                            <a>元数据管理</a>
+                        </li>
+                        <li>
+                            <strong>任务管理</strong>
+                        </li>
+                    </ol>
+                </div>
+                <div class="col-lg-2">
+                </div>
+            </div>
+            
+            <div class="wrapper wrapper-content animated fadeInRight">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-title">
+                                <button type="button" class="btn btn-primary" onclick="add();">添加</button>
+                                
+                                <div class="ibox-tools">
+                                    <a class="collapse-link">
+                                        <i class="fa fa-chevron-up"></i>
+                                    </a>
+
+                                    <a class="close-link">
+                                        <i class="fa fa-times"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="ibox-content">
+
+ 			<table id="dtb" data-toggle="table" data-url="job/list"
+			class="table table-hover" data-show-columns="true" data-search="true"
+			data-show-refresh="true" data-show-toggle="true"
+			data-show-export="true"
+			data-side-pagination="server"
+			data-pagination="true" data-page-list="[5, 10, 20, 50, 100, 200]"
+			data-query-params="queryParams">
+			<thead>
+				<tr>
+					<th data-field="id" data-formatter="hideIdFormatter" class="hide"></th>
+					<th data-field="jobName" data-align="left">任务名称</th>
+					<!-- <th data-field="refSrcDbSourceId"  data-align="left">所属数据源ID</th> -->
+					<th data-field="sourceName"  data-align="left">所属数据源名称</th>
+					<th data-field="srcBase" data-align="left">来源库</th>
+					<th data-field="srcTable" data-align="left">来源表</th>
+					<!-- <th data-field="refDstDbSourceId" data-align="left">所属目标数据源ID</th> -->
+					<th data-field="refDstDbSourceId" data-formatter="refDstDbFormatter" data-align="left">所属目标数据源名称</th>
+					<th data-field="dstBase" data-align="left">目标库</th>
+					<th data-field="dstTable" data-align="left">目标表</th>
+					<th data-field="incrementColumn" data-align="left">自增列</th>
+					<th data-field="incrementColumnVal" data-align="left">自增列值</th>
+					<!-- <th data-field="jobRule" data-align="left" >Drools规则</th> -->
+					<th data-field="remarks" data-align="left">备注</th>
+					
+					<th data-field="operate" data-formatter="operateFormatter" data-events="operateEvents">操作</th>
+				</tr>
+			</thead>
+		</table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal fade" id="edituc"  aria-hidden="true" >
+			<div class="modal-dialog" style="width:50%;height:70%;">
+            <div class="modal-content">
+            <form  id="commentForm">
+            	<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<h3 class="modal-title" id="myModalLabel">编辑</h4>
+					</div>
+					
+                <div class="modal-body">
+                    <div class="row">
+                        
+                                <div class="form-group">
+                                <input id="jobId" type="hidden" />
+                                    <label class="col-sm-2 control-label">任务名称</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control"  id="jobName" name="jobName">
+                                        </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">所属数据源ID</label>
+                                    <div class="col-sm-10">
+                                        <select class="form-control m-b" name="refSrcDbSourceId" id="refSrcDbSourceId">
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                   <label class="col-sm-2 control-label">来源库</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="srcBase" name="srcBase">
+                                        </div>
+                                </div>
+                                <div class="form-group">
+                                   <label class="col-sm-2 control-label">来源表</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="srcTable" name="srcTable">
+                                        </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">目标数据源ID</label>
+                                    <div class="col-sm-10">
+                                        <select class="form-control m-b" name="refDstDbSourceId" id="refDstDbSourceId">
+                                        	<option value="0" selected="selected">HIVE</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                   <label class="col-sm-2 control-label">目标库</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="dstBase" name="dstBase">
+                                        </div>
+                                </div>
+                                <div class="form-group">
+                                   <label class="col-sm-2 control-label">目标表</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="dstTable" name="dstTable">
+                                        </div>
+                                </div>
+                                <div class="form-group">
+                                   <label class="col-sm-2 control-label">自增列</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="incrementColumn" name="incrementColumn">
+                                        </div>
+                                </div>
+                                <div class="form-group">
+                                   <label class="col-sm-2 control-label">自增列值</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="incrementColumnVal" name="incrementColumnVal">
+                                        </div>
+                                </div>
+								<div class="form-group">
+                                    <label class="col-sm-2 control-label">任务规则</label>
+                                        <div class="col-sm-10">
+                                            <textarea class="form-control" rows="18" id="jobRule" name="jobRule"></textarea>
+                                        </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                   <label class="col-sm-2 control-label">描述</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" id="remarks" name="remarks">
+                                        </div>
+                                </div>
+                        </div>
+                    </div>
+                    
+                    <div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+						<button type="button" class="btn btn-primary" onclick="save();" >保存</button>
+					</div>
+					</form>
+                </div>
+            </div>
+        	</div>
+            
+            <div id ="footer"></div>
+		</div>
+
+        </div>
+
+
+    <!-- Mainly scripts -->
+    <script src="js/jquery-2.1.1.min.js"></script>
+    <script src="js/bootstrap.min.js?v=3.4.0"></script>
+    <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
+
+
+    <!-- Data Tables -->
+    <script src="js/plugins/bootstrap-table/bootstrap-table.js"></script>
+    <script src="js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.js"></script>
+    
+    <!-- jQuery Validation plugin javascript-->
+    <script type="text/javascript" src="dist/js/bootstrapValidator.js"></script>
+    
+    <!-- Custom and plugin javascript -->
+    <!-- <script src="js/hplus.js?v=2.2.0"></script>
+    <script src="js/plugins/pace/pace.min.js"></script> -->
+    
+    
+    <!-- Page-Level Scripts -->
+    <script>
+        $(document).ready(function () {
+            $("#left").load("left.html");
+            $("#rightup").load("rightup.html");
+            $("#footer").load("footer.html");
+            
+            
+            $('#commentForm').bootstrapValidator({
+              message: 'This value is not valid',
+              feedbackIcons: {
+                  valid: 'glyphicon glyphicon-ok',
+                  invalid: 'glyphicon glyphicon-remove',
+                  validating: 'glyphicon glyphicon-refresh'
+              },
+              fields: {
+            	  jobName: {
+                      validators: {
+                          notEmpty: {
+                              message: '任务名称不能为空'
+                          }
+                      }
+                  },
+                  refSrcDbSourceId: {
+                      validators: {
+                          notEmpty: {
+                              message: '所属数据源不能为空'
+                          }
+                      }
+                  },
+                  srcBase: {
+                      validators: {
+                          notEmpty: {
+                              message: '来源库不能为空'
+                          }
+                      }
+                  },
+                  srcTable: {
+                      validators: {
+                          notEmpty: {
+                              message: '来源表不能为空'
+                          }
+                      }
+                  },
+                  refDstDbSourceId: {
+                      validators: {
+                          notEmpty: {
+                              message: '所属目标数据源不能为空'
+                          }
+                      }
+                  },
+                  dstBase: {
+                      validators: {
+                          notEmpty: {
+                              message: '目标库不能为空'
+                          }
+                      }
+                  },
+                  dstTable: {
+                      validators: {
+                          notEmpty: {
+                              message: '目标表不能为空'
+                          }
+                      }
+                  }
+              }
+          });
+
+        });
+        
+        function queryParams(params) {
+            return params;
+        }
+        
+        function operateFormatter(value, row, index) {
+	        return [
+	            '<a class="edit ml10" style="color:black;" href="javascript:void(0)" title="编辑">',
+	                '<span class="glyphicon glyphicon-edit"></span>',
+	            '</a>&emsp;',
+	            '<a class="remove ml10" style="color:black;" href="javascript:void(0)" title="删除">',
+	                '<i class="glyphicon glyphicon-trash"></i>',
+	            '</a>&emsp;',
+	            '<a class="ok ml10" style="color:black;" href="javascript:void(0)" title="复制">',
+                '<i class="glyphicon glyphicon-copyright-mark"></i>',
+            	'</a>'
+	        ].join('');
+	    }
+        
+        function hideIdFormatter(value, row, index) {
+	        return "<input type='hidden' value="+value+" name='id' />";
+	    }
+        
+        function refDstDbFormatter(value, row, index) {
+	        var rs = "hive";
+	        if (value == 0)
+	        {
+	        	rs = "hive";	
+	        }
+	        return rs;
+	    }
+        
+        
+	    function refreshTable(){
+	    	$("table").bootstrapTable('refresh', {
+                url:$("table").attr('data-url')
+            });
+	    }
+	    
+        window.operateEvents = {
+    	        'click .ok': function (e, value, row, index) {
+    	        	var id=$("[data-index="+index+"]").find('td').eq(0).children().first().val();
+    	     	   	$("#myModalLabel").html('复制');
+    	     	   	$("#refSrcDbSourceId").empty();
+    	     	   	
+    	     	   	$.post('datasource/getAll','',function(data){
+    		       		var allrows = data.allrows;
+    		       		$.each(allrows, function(i,val) {  
+    		       			$("#refSrcDbSourceId").append("<option value='"+val.id+"'>"+val.sourceName+"</option>");
+    		       		});
+    	           });
+    	     	   	
+    	        	$.post('job/getById',{"id":id},function(data){
+	 	    	     	    
+	    	        	$("#jobId").val('');
+	    	        	$("#jobName").val(data.jobName+"_copy");
+	    	     	    $("#srcBase").val(data.srcBase);
+	    	     	   	$("#srcTable").val(data.srcTable);
+	    	       		$("#dstBase").val(data.dstBase);
+	    	    	    $("#dstTable").val(data.dstTable);
+	    	    	    $("#incrementColumn").val(data.incrementColumn);
+	    	    	    $("#incrementColumnVal").val(data.incrementColumnVal);
+	    	    	    $("#jobRule").val(data.jobRule);
+	    	    	    $("#remarks").val(data.remarks);
+	    	     	    
+	    	     	   	$("#refSrcDbSourceId option[value='"+data.refSrcDbSourceId+"']").attr("selected", true);
+	    	     	   	
+		            });
+    	        	
+    	        	$("#edituc").modal("show");
+    	        },
+    	        'click .edit': function (e, value, row, index) {
+    	        	var id=$("[data-index="+index+"]").find('td').eq(0).children().first().val();
+    	     	   	$("#myModalLabel").html('编辑');
+    	     	   	$("#refSrcDbSourceId").empty();
+    	     	   	
+    	     	   	$.post('datasource/getAll','',function(data){
+    		       		var allrows = data.allrows;
+    		       		$.each(allrows, function(i,val) {  
+    		       			$("#refSrcDbSourceId").append("<option value='"+val.id+"'>"+val.sourceName+"</option>");
+    		       		});
+    	           });
+    	     	   	
+    	        	$.post('job/getById',{"id":id},function(data){
+	 	    	     	    
+	    	        	$("#jobId").val(data.id);
+	    	        	$("#jobName").val(data.jobName);
+	    	     	    $("#srcBase").val(data.srcBase);
+	    	     	   	$("#srcTable").val(data.srcTable);
+	    	       		$("#dstBase").val(data.dstBase);
+	    	    	    $("#dstTable").val(data.dstTable);
+	    	    	    $("#incrementColumn").val(data.incrementColumn);
+	    	    	    $("#incrementColumnVal").val(data.incrementColumnVal);
+	    	    	    $("#jobRule").val(data.jobRule);
+	    	    	    $("#remarks").val(data.remarks);
+	    	     	    
+	    	     	   	$("#refSrcDbSourceId option[value='"+data.refSrcDbSourceId+"']").attr("selected", true);
+	    	     	   	
+		            });
+    	        	
+    	        	$("#edituc").modal("show");
+    	            //console.log(value, row, index);
+    	        },
+    	        'click .remove': function (e, value, row, index) {
+    	            //alert('You click remove icon, row: ' + JSON.stringify(row));
+    	            var delid=$("[data-index="+index+"]").find('td').eq(0).children().first().val();
+    	            if(confirm("确定删除该条类别及其引用吗？"+delid)){
+    	            	$.getJSON('job/delete',{"id":delid},function(data){
+    	            		refreshTable();
+    		            });	
+    	            }
+    	            //console.log(value, row, index);
+    	        }
+    	    };
+        
+        function save(){
+        	var bootstrapValidator = $("#commentForm").data('bootstrapValidator');
+   			bootstrapValidator.validate();
+   			if(bootstrapValidator.isValid())
+   			{
+	            $.post('job/save',{"jobId":$("#jobId").val(),"jobName":$("#jobName").val(),"refSrcDbSourceId":$("#refSrcDbSourceId").val(),
+	            	"srcBase":$("#srcBase").val(),"srcTable":$("#srcTable").val(),"refDstDbSourceId":$("#refDstDbSourceId").val(),"dstBase":$("#dstBase").val(),
+	            	"dstTable":$("#dstTable").val(),"incrementColumn":$("#incrementColumn").val(),"incrementColumnVal":$("#incrementColumnVal").val(),
+	            	"jobRule":$("#jobRule").val(),"remarks":$("#remarks").val()},function(result){
+	            		
+	            		if (result.status == 'success') 
+	            		{
+	            			alert('保存成功!');
+	            			$("#edituc").modal('hide');
+	                      	refreshTable();	
+	            		}
+	            		else
+	            		{
+	            			alert(result.message);
+	            		}
+	     	   }, 'json');
+   			}
+        }
+        
+        function add(){
+        	$("#jobId").val('');
+        	$("#jobName").val('');
+     	    $("#srcBase").val('');
+     	   	$("#srcTable").val('');
+       		$("#dstBase").val('');
+    	    $("#dstTable").val('');
+    	    $("#incrementColumn").val('');
+    	    $("#incrementColumnVal").val('');
+    	    $("#jobRule").val('');
+    	    $("#remarks").val('');
+     	   	$("#myModalLabel").html('添加');
+     	   	$("#refSrcDbSourceId").empty();
+     	   	
+     	   	$.post('datasource/getAll','',function(data){
+	       		var allrows = data.allrows;
+	       		
+	       		$.each(allrows, function(i,val) {  
+	       			$("#refSrcDbSourceId").append("<option value='"+val.id+"'>"+val.sourceName+"</option>");
+	       		});
+           });
+     	   	
+        	$("#edituc").modal("show");
+        }
+
+    
+    </script>
+
+
+</body>
+
+</html>

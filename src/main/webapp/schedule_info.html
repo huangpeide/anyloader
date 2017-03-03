@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <title>任务调度管理</title>
+
+    <link href="css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
+    <link href="font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
+
+    <!-- Data Tables -->
+    <link href="js/plugins/bootstrap-table/bootstrap-table.min.css" rel="stylesheet" type="text/css">
+
+    <link href="css/style.css?v=2.2.0" rel="stylesheet">
+    
+
+    
+
+</head>
+
+<body>
+    <div id="wrapper">
+        
+        <div id= "left"></div>
+
+        <div id="page-wrapper" class="gray-bg dashbard-1">
+        
+           <div id ="rightup"></div>
+            
+            <div class="row wrapper border-bottom white-bg page-heading">
+                <div class="col-lg-10">
+                    <h2>任务调度管理</h2>
+                    <ol class="breadcrumb">
+                        <li>
+                            <a href="index.html">主页</a>
+                        </li>
+                        <li>
+                            <a>元数据管理</a>
+                        </li>
+                        <li>
+                            <strong>任务调度管理</strong>
+                        </li>
+                    </ol>
+                </div>
+                <div class="col-lg-2">
+                </div>
+            </div>
+            
+            <div class="wrapper wrapper-content animated fadeInRight">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-title">
+                                <button type="button" class="btn btn-primary" onclick="add();">添加</button>
+                                
+                                <div class="ibox-tools">
+                                    <a class="collapse-link">
+                                        <i class="fa fa-chevron-up"></i>
+                                    </a>
+
+                                    <a class="close-link">
+                                        <i class="fa fa-times"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="ibox-content">
+
+ 			<table id="dtb" data-toggle="table" data-url="schedule/list"
+			class="table table-hover" data-show-columns="true" data-search="true"
+			data-show-refresh="true" data-show-toggle="true"
+			data-show-export="true"
+			data-side-pagination="server"
+			data-pagination="true" data-page-list="[5, 10, 20, 50, 100, 200]"
+			data-query-params="queryParams">
+			<thead>
+				<tr>
+					<th data-field="id" data-formatter="hideIdFormatter" class="hide"></th>
+					<!-- <th data-field="refJobId" data-align="left">所属任务ID</th> -->
+					<th data-field="jobName" data-align="left">所属任务名称</th>
+					<th data-field="scheduleType" data-formatter="typeFormatter" data-align="left">调度类型</th>
+					<th data-field="schedule" data-align="left" >调度计划</th>
+					<th data-field="status" data-formatter="statusFormatter" data-align="left" >最后状态</th>
+					<th data-field="remarks" data-align="left">描述</th>
+					
+					<th data-field="operate" data-formatter="operateFormatter" data-events="operateEvents">操作</th>
+				</tr>
+			</thead>
+		</table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal fade" id="edituc"  aria-hidden="true" >
+			<div class="modal-dialog" style="width:50%;height:70%;">
+            <div class="modal-content">
+            <form  id="commentForm">
+            	<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<h3 class="modal-title" id="myModalLabel">编辑</h4>
+					</div>
+					
+                <div class="modal-body">
+                    <div class="row">
+                        
+                                <div class="form-group">
+                                <input id="scheduleId" type="hidden" />
+                                    <label class="col-sm-2 control-label">调度计划名称</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control"  id="scheduleName" name="scheduleName">
+                                        </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">所属任务</label>
+                                    <div class="col-sm-10">
+                                        <select class="form-control m-b" name="refJobId" id="refJobId">
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">调度类别</label>
+                                    <div class="col-sm-10">
+                                        <select class="form-control m-b" name="scheduleType" id="scheduleType">
+                                        	<option value="1">一次性</option>
+                                        	<option value="2">自定义</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                   <label class="col-sm-2 control-label">调度计划</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="schedule" id="schedule">
+                                        </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                   <label class="col-sm-2 control-label">描述</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="remarks" id="remarks">
+                                        </div>
+                                </div>
+                        </div>
+                    </div>
+                    
+                    <div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+						<button type="button" class="btn btn-primary" onclick="save();" >保存</button>
+					</div>
+					</form>
+                </div>
+            </div>
+        	</div>
+            
+            <div id ="footer"></div>
+		</div>
+
+        </div>
+
+
+    <!-- Mainly scripts -->
+    <script src="js/jquery-2.1.1.min.js"></script>
+    <script src="js/bootstrap.min.js?v=3.4.0"></script>
+    <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
+
+
+    <!-- Data Tables -->
+    <script src="js/plugins/bootstrap-table/bootstrap-table.js"></script>
+    <script src="js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.js"></script>
+    
+    <!-- jQuery Validation plugin javascript-->
+    <script type="text/javascript" src="dist/js/bootstrapValidator.js"></script> 
+    
+    <!-- Custom and plugin javascript -->
+    <!-- <script src="js/hplus.js?v=2.2.0"></script>
+    <script src="js/plugins/pace/pace.min.js"></script> -->
+    
+    
+    <!-- Page-Level Scripts -->
+    <script>
+        $(document).ready(function () {
+            $("#left").load("left.html");
+            $("#rightup").load("rightup.html");
+            $("#footer").load("footer.html");
+            
+            $('#commentForm').bootstrapValidator({
+              message: 'This value is not valid',
+              feedbackIcons: {
+                  valid: 'glyphicon glyphicon-ok',
+                  invalid: 'glyphicon glyphicon-remove',
+                  validating: 'glyphicon glyphicon-refresh'
+              },
+              fields: {
+            	  scheduleName: {
+                      validators: {
+                          notEmpty: {
+                              message: '调度计划名称不能为空'
+                          }
+                      }
+                  },
+                  refJobId: {
+                      validators: {
+                          notEmpty: {
+                              message: '所属任务不能为空'
+                          }
+                      }
+                  },
+                  scheduleType: {
+                      validators: {
+                          notEmpty: {
+                              message: '调度类型不能为空'
+                          }
+                      }
+                  }
+              }
+          });
+
+        });
+        
+        function queryParams(params) {
+            return params;
+        }
+        
+        function operateFormatter(value, row, index) {
+	        return [
+	        	'<a class="edit ml10" style="color:black;" href="javascript:void(0)" title="编辑">',
+                '<span class="glyphicon glyphicon-edit"></span>',
+            	'</a>&emsp;',
+            	'<a class="remove ml10" style="color:black;" href="javascript:void(0)" title="删除">',
+                '<i class="glyphicon glyphicon-trash"></i>',
+            	'</a>&emsp;',
+            	'<a class="ok ml10" style="color:black;" href="javascript:void(0)" title="创建计划">',
+            	'<i class="glyphicon glyphicon-play-circle"></i>',
+        		'</a>'
+	        ].join('');
+	    }
+        
+        function hideIdFormatter(value, row, index) {
+	        return "<input type='hidden' value="+value+" name='id' />";
+	    }
+        
+        function typeFormatter(value, row, index) {
+        	var rs = "一次性";
+	        if (value == 1)
+	        {
+	        	rs = "一次性";
+	        }
+	        else if (value == 2)
+	        {
+	        	rs = "自定义计划";
+	        }
+	        
+	        return rs;
+	    }
+        
+        function statusFormatter(value, row, index) {
+        	var rs = "初始化";
+	        if (value == 0)
+	        {
+	        	rs = "初始化";
+	        }
+	        else if (value == 1)
+	        {
+	        	rs = "运行中";
+	        }
+	        else if (value == 2)
+	        {
+	        	rs = "成功";
+	        }
+	        else if (value == 3)
+	        {
+	        	rs = "失败";
+	        }
+	        return rs;
+	    }
+        
+	    function refreshTable(){
+	    	$("table").bootstrapTable('refresh', {
+                url:$("table").attr('data-url')
+            });
+	    }
+	    
+        window.operateEvents = {
+    	        'click .ok': function (e, value, row, index) {
+    	        	var delid=$("[data-index="+index+"]").find('td').eq(0).children().first().val();
+    	            if(confirm("确定要生成计划吗？"+delid)){
+    	            	$.getJSON('schedule/createExecute',{"id":delid},function(result){
+    	            		if (result.status == 'success') 
+    	            		{
+    	            			alert('创建计划成功!');
+    	            		}
+    	            		else
+    	            		{
+    	            			alert(result.message);
+    	            		}
+    		            });	
+    	            }
+    	        },
+    	        'click .edit': function (e, value, row, index) {
+    	        	var id=$("[data-index="+index+"]").find('td').eq(0).children().first().val();
+    	            
+    	     	   	$("#myModalLabel").html('编辑');
+    	     	   	$("#refJobId").empty();
+    	     	   	$.post('job/getAll','',function(data){
+    		       		var allrows = data.allrows;
+    		       		$.each(allrows, function(i,val) {  
+    		       			$("#refJobId").append("<option value='"+val.id+"'>"+val.jobName+"</option>");
+    		       		});
+    	           });
+    	     	   	
+    	        	$.post('schedule/getById',{"id":id},function(data){
+    	        		
+    	        		$("#scheduleId").val(data.id);
+    	                $("#scheduleName").val(data.scheduleName);
+    	                $("#scheduleType").val(data.scheduleType);
+    	                $("#schedule").val(data.schedule);
+    	                //$("#status").val(data.status);
+    	                $("#remarks").val(data.remarks);
+	    	     	    
+	    	     	   	$("#scheduleType option[value='"+data.scheduleType+"']").attr("selected", true);
+	    	     	   	$("#refJobId option[value='"+data.refJobId+"']").attr("selected", true);
+	    	     	   	
+		            });
+    	        	
+    	        	$("#edituc").modal("show");
+    	            //console.log(value, row, index);
+    	        },
+    	        'click .remove': function (e, value, row, index) {
+    	            //alert('You click remove icon, row: ' + JSON.stringify(row));
+    	            var delid=$("[data-index="+index+"]").find('td').eq(0).children().first().val();
+    	            if(confirm("确定删除该调度计划吗？"+delid)){
+    	            	$.getJSON('schedule/delete',{"id":delid},function(data){
+    	            		refreshTable();
+    		            });	
+    	            }
+    	            //console.log(value, row, index);
+    	        }
+    	    };
+        
+        function save(){
+        	var bootstrapValidator = $("#commentForm").data('bootstrapValidator');
+   			bootstrapValidator.validate();
+   			if(bootstrapValidator.isValid())
+   			{
+	            $.post('schedule/save',{"scheduleId":$("#scheduleId").val(),"scheduleName":$("#scheduleName").val(),"refJobId":$("#refJobId").val(),
+	            	"scheduleType":$("#scheduleType").val(),"schedule":$("#schedule").val(),"remarks":$("#remarks").val()},function(result){
+	            		if (result.status == 'success') 
+	            		{
+	            			alert('保存成功!');
+	            			$("#edituc").modal('hide');
+	                      	refreshTable();	
+	            		}
+	            		else
+	            		{
+	            			alert(result.message);
+	            		}
+	     	   }, 'json');
+   			}
+        }
+        
+        function add(){
+        	$("#scheduleId").val('');
+            $("#schedule").val('');
+        	$("#remarks").val('');
+     	   	$("#myModalLabel").html('添加');
+     	   	$("#refJobId").empty();
+     	   	
+     	   	//$("#refTagCategoryId").append("<option value='0'>没有上级</option>");
+     	   	$.post('job/getAll','',function(data){
+	       		var allrows = data.allrows;
+	       		$.each(allrows, function(i,val) {  
+	       			$("#refJobId").append("<option value='"+val.id+"'>"+val.jobName+"</option>");
+	       		});
+           });
+     	   	
+        	$("#edituc").modal("show");
+        }
+
+    
+    </script>
+
+
+</body>
+
+</html>

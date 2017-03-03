@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <meta charset="utf-8">
+    <title>调度执行管理</title>
+
+    <link href="css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
+    <link href="font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
+
+    <!-- Data Tables -->
+    <link href="js/plugins/bootstrap-table/bootstrap-table.min.css" rel="stylesheet" type="text/css">
+
+    <link href="css/style.css?v=2.2.0" rel="stylesheet">
+    
+   <!--  <style type="text/css">
+		table{
+		    table-layout:fixed;
+		}
+		td{  
+		    overflow:hidden;
+		    text-overflow:ellipsis;
+		    white-space:nowrap;
+		}
+   </style> -->
+
+    
+
+</head>
+
+<body>
+    <div id="wrapper">
+        
+        <div id= "left"></div>
+
+        <div id="page-wrapper" class="gray-bg dashbard-1">
+        
+           <div id ="rightup"></div>
+            
+            <div class="row wrapper border-bottom white-bg page-heading">
+                <div class="col-lg-10">
+                    <h2>调度执行管理</h2>
+                    <ol class="breadcrumb">
+                        <li>
+                            <a href="index.html">主页</a>
+                        </li>
+                        <li>
+                            <a>元数据管理</a>
+                        </li>
+                        <li>
+                            <strong>调度执行管理</strong>
+                        </li>
+                    </ol>
+                </div>
+                <div class="col-lg-2">
+                </div>
+            </div>
+            
+            <div class="wrapper wrapper-content animated fadeInRight">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-title">
+                                
+                                <div class="ibox-tools">
+                                    <a class="collapse-link">
+                                        <i class="fa fa-chevron-up"></i>
+                                    </a>
+
+                                    <a class="close-link">
+                                        <i class="fa fa-times"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="ibox-content">
+
+ 			<table id="dtb" data-toggle="table" data-url="execute/list"
+			class="table table-hover" data-show-columns="true" data-search="true"
+			data-show-refresh="true" data-show-toggle="true"
+			data-show-export="true"
+			data-side-pagination="server"
+			data-pagination="true" data-page-list="[5, 10, 20, 50, 100, 200]"
+			data-query-params="queryParams">
+			<thead>
+				<tr>
+					<th data-field="id" data-formatter="hideIdFormatter" class="hide"></th>
+					<!-- <th data-field="refScheduleId" data-align="left">所属调度ID</th> -->
+					<th data-field="scheduleName" data-align="left">所属调度名称</th>
+					<!-- <th data-field="executeLog" data-align="left">执行日志内容</th> -->
+					<th data-field="status" data-formatter="statusFormatter" data-align="left" >状态</th>
+					<th data-field="startTime" data-align="left" >开始时间</th>
+					<th data-field="endTime" data-align="left" >结束时间</th>
+					<th data-field="remarks" data-align="left">描述</th>
+					
+					<th data-field="operate" data-formatter="operateFormatter" data-events="operateEvents">操作</th>
+				</tr>
+			</thead>
+		</table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal fade" id="edituc"  aria-hidden="true" >
+			<div class="modal-dialog" style="width:50%;height:70%;">
+            <div class="modal-content">
+            <form  id="commentForm">
+            	<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<h3 class="modal-title" id="myModalLabel">查看</h4>
+					</div>
+					
+                <div class="modal-body">
+                    <div class="row">
+                        
+                                
+                                <div class="form-group">
+                                	<input id="executeId" type="hidden" />
+                                    <label class="col-sm-2 control-label">所属调度</label>
+                                    <div class="col-sm-10">
+                                        <select class="form-control m-b" name="refScheduleId" id="refScheduleId">
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                
+                                <div class="form-group">
+                                   <label class="col-sm-2 control-label">状态</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="status" id="status">
+                                        </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                   <label class="col-sm-2 control-label">开始时间</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="startTime" id="startTime">
+                                        </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                   <label class="col-sm-2 control-label">结束时间</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="endTime" id="endTime">
+                                        </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">执行内容</label>
+                                        <div class="col-sm-10">
+                                            <textarea class="form-control" rows="10" id="executeLog" name="executeLog"></textarea>
+                                        </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                   <label class="col-sm-2 control-label">描述</label>
+                                        <div class="col-sm-10">
+                                            <input type="text" class="form-control" name="remarks" id="remarks">
+                                        </div>
+                                </div>
+                        </div>
+                    </div>
+                    
+                    <div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+					</div>
+					</form>
+                </div>
+            </div>
+        	</div>
+            
+            <div id ="footer"></div>
+		</div>
+
+        </div>
+
+
+    <!-- Mainly scripts -->
+    <script src="js/jquery-2.1.1.min.js"></script>
+    <script src="js/bootstrap.min.js?v=3.4.0"></script>
+    <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
+
+
+    <!-- Data Tables -->
+    <script src="js/plugins/bootstrap-table/bootstrap-table.js"></script>
+    <script src="js/plugins/bootstrap-table/locale/bootstrap-table-zh-CN.js"></script>
+    
+    <!-- jQuery Validation plugin javascript-->
+    <script type="text/javascript" src="dist/js/bootstrapValidator.js"></script> 
+    
+    <!-- Custom and plugin javascript -->
+    <!-- <script src="js/hplus.js?v=2.2.0"></script>
+    <script src="js/plugins/pace/pace.min.js"></script> -->
+    
+    
+    <!-- Page-Level Scripts -->
+    <script>
+        $(document).ready(function () {
+            $("#left").load("left.html");
+            $("#rightup").load("rightup.html");
+            $("#footer").load("footer.html");
+
+        });
+        
+        function queryParams(params) {
+            return params;
+        }
+        
+        function operateFormatter(value, row, index) {
+	        return [
+	        	'<a class="edit ml10" style="color:black;" href="javascript:void(0)" title="查看">',
+                '<span class="glyphicon glyphicon-eye-open"></span>',
+            	'</a>'
+	        ].join('');
+	    }
+        
+        function hideIdFormatter(value, row, index) {
+	        return "<input type='hidden' value="+value+" name='id' />";
+	    }
+        
+        function statusFormatter(value, row, index) {
+        	var rs = "初始化";
+	        if (value == 0)
+	        {
+	        	rs = "初始化";
+	        }
+	        else if (value == 1)
+	        {
+	        	rs = "运行中";
+	        }
+	        else if (value == 2)
+	        {
+	        	rs = "成功";
+	        }
+	        else if (value == 3)
+	        {
+	        	rs = "失败";
+	        }
+	        return rs;
+	    }
+        
+	    function refreshTable(){
+	    	$("table").bootstrapTable('refresh', {
+                url:$("table").attr('data-url')
+            });
+	    }
+	    
+        window.operateEvents = {
+    	        'click .ok': function (e, value, row, index) {
+    	        	var delid=$("[data-index="+index+"]").find('td').eq(0).children().first().val();
+    	        },
+    	        'click .edit': function (e, value, row, index) {
+    	        	var id=$("[data-index="+index+"]").find('td').eq(0).children().first().val();
+    	            
+    	     	   	$("#myModalLabel").html('查看');
+    	     	   	$("#refScheduleId").empty();
+    	     	   	$.post('schedule/getAll','',function(data){
+    		       		var allrows = data.allrows;
+    		       		$.each(allrows, function(i,val) {  
+    		       			$("#refScheduleId").append("<option value='"+val.id+"'>"+val.scheduleName+"</option>");
+    		       		});
+    	           });
+    	     	   	
+    	        	$.post('execute/getById',{"id":id},function(data){
+    	        		
+    	        		$("#executeId").val(data.id);
+    	                $("#executeLog").val(data.executeLog);
+    	                $("#startTime").val(data.startTime);
+    	                $("#endTime").val(data.endTime);
+    	                $("#status").val(data.status);
+    	                $("#remarks").val(data.remarks);
+	    	     	    
+	    	     	   	$("#refScheduleId option[value='"+data.refScheduleId+"']").attr("selected", true);
+	    	     	   	
+		            });
+    	        	
+    	        	$("#edituc").modal("show");
+    	            //console.log(value, row, index);
+    	        },
+    	        'click .remove': function (e, value, row, index) {
+    	            //alert('You click remove icon, row: ' + JSON.stringify(row));
+    	            var delid=$("[data-index="+index+"]").find('td').eq(0).children().first().val();
+    	        }
+    	    };
+        
+    
+    </script>
+
+
+</body>
+
+</html>
